@@ -11,7 +11,7 @@ _local:
 	python3 $(DJANGO_APP_ROOT)/manage.py runserver 0.0.0.0:8080
 
 dev:
-	@docker-compose -f docker-compose.dev.yml up --build
+	@docker-compose -f docker-compose.dev.yml up -d --build
 
 _gunicorn: 
 	gunicorn --chdir ${DJANGO_APP_ROOT} ${PROJECT_NAME}.wsgi:application -b 0.0.0.0:8080
@@ -46,7 +46,7 @@ _collectstatic:
 collectstatic:
 	@docker exec -it $(PROJECT_NAME) make _collectstatic
 
-_initadmin:
+_initadmin: 
 	python3 $(PROJECT_NAME)/manage.py initadmin
 
 initadmin:

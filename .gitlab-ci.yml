@@ -1,0 +1,33 @@
+image: ubuntu
+
+stages:
+    - deploy-development
+    
+before_script:
+    # https://gitlab.com/gitlab-examples/ssh-private-key/-/blob/master/.gitlab-ci.yml
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "darth@empire.com"
+    - git config --global user.name "Darth Vader"
+     
+deploy to staging:
+    stage: deploy-development
+    variables:
+        SiteLocation: "/var/www/project_name/"
+    script:
+        - ssh developer@your_ec2_instance.com
+        - git config --global user.name "Deploy User" && cd $SiteLocation
+        - git --git-dir=$SiteLocation/.git --work-tree=$SiteLocation fetch --all
+        - git --git-dir=$SiteLocation/.git --work-tree=$SiteLocation reset --hard origin/stage
+        - git --git-dir=$SiteLocation/.git --work-tree=$SiteLocation pull origin development_branch
+        - echo "Update complete..."
+        - cd $SiteLocation
+        - make dev
+    only:
+        - development_branch
+      
