@@ -1,0 +1,39 @@
+version: "3.2"
+
+services:
+  project_name_app: &app
+    tty: true
+    build:
+      context: .
+      args:
+        requirements: requirements/development.txt
+    container_name: project_name
+    environment:
+      # use in code
+      - DJANGO_SETTINGS_MODULE=project_name.settings.local
+      - PYTHONUNBUFFERED=1
+    restart: always
+    volumes:
+      - .:/app:delegated
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - 8080:8080
+    command: make _local
+
+  postgres:
+    image: postgres:12
+    container_name: project_name_postgres
+    environment:
+      - POSTGRES_USER=project_name
+      - POSTGRES_PASSWORD=project_name
+      - POSTGRES_DB=project_name
+    ports:
+      - 5432
+
+  redis:
+    image: redis:6
+    container_name: project_name_redis
+    ports:
+      - 6379
