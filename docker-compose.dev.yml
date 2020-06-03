@@ -14,14 +14,14 @@ services:
       - PYTHONUNBUFFERED=1
     restart: always
     volumes:
-      - .:/app:delegated
+      - ./project_name:/app:delegated
       - static-django:/app/static:delegated
     depends_on:
       - postgres
       - redis
     ports:
       - 8080:8080
-    command: make -f project_name/Makefile _dev 
+    command: make _dev 
 
   postgres:
     image: postgres:12

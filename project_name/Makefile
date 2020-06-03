@@ -27,25 +27,25 @@ _migrations:
 	python3 ${MANAGE_FILE} makemigrations --noinput
 
 migrations:
-	@docker exec -it $(PROJECT_NAME) make _migrations
+	@docker exec -it $(PROJECT_NAME) python3 ${MANAGE_FILE} makemigrations --noinput
 
 _migrate:
 	python3 ${MANAGE_FILE} migrate --noinput
 
 migrate:
-	@docker exec -it $(PROJECT_NAME) make _migrate
+	@docker exec -it $(PROJECT_NAME) python3 ${MANAGE_FILE} migrate --noinput
 
 _collectstatic:
 	python3 ${MANAGE_FILE} collectstatic --no-input --clear
 
 collectstatic:
-	@docker exec -it $(PROJECT_NAME) make _collectstatic
+	@docker exec -it $(PROJECT_NAME) python3 ${MANAGE_FILE} collectstatic --no-input --clear
 
 _initadmin: 
 	python3 ${MANAGE_FILE} initadmin
 
 initadmin:
-	@docker exec -it $(PROJECT_NAME) make _initadmin
+	@docker exec -it $(PROJECT_NAME) python3 ${MANAGE_FILE} initadmin
 
 
 # Linters & Formaters
