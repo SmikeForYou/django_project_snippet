@@ -41,7 +41,7 @@ def check_alive():
         print(status)  # TODO: Change to logger.info
         if all([s.alive for s in related_services]):
             break
-        time.sleep(5)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
