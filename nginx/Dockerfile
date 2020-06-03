@@ -7,7 +7,7 @@ RUN apt-get update -y
 RUN apt-get install -y nginx
 
 RUN apt-get update && apt-get install -y python3-pip
-RUN pip3 install --no-cache-dir grequests
+RUN pip3 install --no-cache-dir requests
 
 ARG PUID=1000
 ARG PGID=1000

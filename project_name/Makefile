@@ -1,17 +1,12 @@
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
 PROJECT_NAME=project_name
-DJANGO_APP_ROOT=${MKFILE_DIR}${PROJECT_NAME}
-
+DJANGO_APP_ROOT=${MKFILE_DIR}
+MANAGE_FILE=${DJANGO_APP_ROOT}/manage.py
 # Common
-local:
-	@docker-compose -f docker-compose.local.yml up --build $(PROJECT_NAME)_app
 
 _local:
 	python3 $(DJANGO_APP_ROOT)/manage.py runserver 0.0.0.0:8080
-
-dev:
-	@docker-compose -f docker-compose.dev.yml up -d --build
 
 _gunicorn: 
 	gunicorn --chdir ${DJANGO_APP_ROOT} ${PROJECT_NAME}.wsgi:application -b 0.0.0.0:8080
@@ -29,25 +24,25 @@ wait_resources:
 
 # Django Services Wrapper
 _migrations:
-	python3 $(PROJECT_NAME)/manage.py makemigrations --noinput
+	python3 ${MANAGE_FILE} makemigrations --noinput
 
 migrations:
 	@docker exec -it $(PROJECT_NAME) make _migrations
 
 _migrate:
-	python3 $(PROJECT_NAME)/manage.py migrate --noinput
+	python3 ${MANAGE_FILE} migrate --noinput
 
 migrate:
 	@docker exec -it $(PROJECT_NAME) make _migrate
 
 _collectstatic:
-	python3 $(PROJECT_NAME)/manage.py collectstatic --no-input --clear
+	python3 ${MANAGE_FILE} collectstatic --no-input --clear
 
 collectstatic:
 	@docker exec -it $(PROJECT_NAME) make _collectstatic
 
 _initadmin: 
-	python3 $(PROJECT_NAME)/manage.py initadmin
+	python3 ${MANAGE_FILE} initadmin
 
 initadmin:
 	@docker exec -it $(PROJECT_NAME) make _initadmin

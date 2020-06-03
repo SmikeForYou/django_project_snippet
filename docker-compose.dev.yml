@@ -5,7 +5,7 @@ services:
     container_name: project_name
     tty: true
     build:
-      context: .
+      context: ./project_name
       args:
         requirements: requirements/development.txt
     environment:
@@ -21,7 +21,7 @@ services:
       - redis
     ports:
       - 8080:8080
-    command: make _dev
+    command: make -f project_name/Makefile _dev 
 
   postgres:
     image: postgres:12

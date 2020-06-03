@@ -10,7 +10,7 @@ PARENT = pathlib.Path(__file__).parent
 
 
 def read_version():
-    init_py = os.path.join(os.path.dirname(__file__), "project_name", "__init__.py",)
+    init_py = os.path.join(os.path.dirname(__file__), "__init__.py",)
 
     with open(init_py) as f:
         for line in f:

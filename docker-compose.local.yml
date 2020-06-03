@@ -20,7 +20,7 @@ services:
       - redis
     ports:
       - 8080:8080
-    command: make _local
+    command: make -f project_name/Makefile _local
 
   postgres:
     image: postgres:12
