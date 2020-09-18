@@ -1,6 +1,6 @@
 # Django Project Template
 
-Replace "project name" throughout the project including directories and get started
+Replace "project name" throughout the project including directories names and get started
 ___
 
 ## Requirements
